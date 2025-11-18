@@ -24,8 +24,10 @@ test("check sunk", () => {
 test("blank board", () => {
 	const board = new Gameboard();
 
-	expect(board.board[0].length).toBe(10);
-	expect(board.board.length).toBe(10);
+	expect(board.gameboard[0].length).toBe(10);
+	expect(board.historyBoard[0].length).toBe(10);
+	expect(board.gameboard.length).toBe(10);
+	expect(board.historyBoard.length).toBe(10);
 });
 
 test("place ship", () => {
@@ -34,10 +36,10 @@ test("place ship", () => {
 
 	board.place(ship, [0, 0]);
 
-	expect(board.board[0][0]).toEqual(ship);
-	expect(board.board[0][1]).toEqual(ship);
-	expect(board.board[0][2]).toEqual(ship);
-	expect(board.board[0][3]).not.toEqual(ship);
+	expect(board.gameboard[0][0]).toEqual(ship);
+	expect(board.gameboard[0][1]).toEqual(ship);
+	expect(board.gameboard[0][2]).toEqual(ship);
+	expect(board.gameboard[0][3]).not.toEqual(ship);
 });
 
 test("hit ship", () => {
@@ -46,28 +48,33 @@ test("hit ship", () => {
 	board.place(ship, [0, 0]);
 
 	board.receiveAttack([0, 0]);
-	expect(board.board[0][0].hits).toBe(1);
+	expect(board.gameboard[0][0].hits).toBe(1);
 
 	board.receiveAttack([0, 1]);
-	expect(board.board[0][1].hits).toBe(2);
+	expect(board.gameboard[0][1].hits).toBe(2);
 
 	board.receiveAttack([0, 2]);
-	expect(board.board[0][2].hits).toBe(3);
+	expect(board.gameboard[0][2].hits).toBe(3);
 });
 
 test("missed ship", () => {
 	const board = new Gameboard();
 	board.receiveAttack([3, 2]);
 
-	expect(board.board[3][2]).toBe(1);
+	expect(board.historyBoard[3][2]).toBe(1);
 });
 
 test("already guessed, no ship", () => {
 	const board = new Gameboard();
 	board.receiveAttack([3, 2]);
 
-	expect(board.board[3][2]).toBe(1);
+	expect(board.historyBoard[3][2]).toBe(1);
 
 	board.receiveAttack([3, 2]);
-	expect(board.board[3][2]).toBe(1);
+	expect(board.historyBoard[3][2]).toBe(1);
+});
+
+test("already guessed, no ship", () => {
+	const board = new Gameboard();
+	board.receiveAttack([3, 2]);
 });

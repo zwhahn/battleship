@@ -20,26 +20,34 @@ export class Ship {
 
 export class Gameboard {
 	constructor() {
-		this.board = [];
+		this.gameboard = [];
 		for (let i = 0; i < 10; i++) {
-			this.board[i] = [];
+			this.gameboard[i] = [];
 			for (let j = 0; j < 10; j++) {
-				this.board[i][j] = 0;
+				this.gameboard[i][j] = 0;
+			}
+		}
+		this.historyBoard = [];
+		for (let i = 0; i < 10; i++) {
+			this.historyBoard[i] = [];
+			for (let j = 0; j < 10; j++) {
+				this.historyBoard[i][j] = 0;
 			}
 		}
 	}
 
 	place(ship, [y, x]) {
 		for (let i = 0; i < ship.length; i++) {
-			this.board[y][x + i] = ship;
+			this.gameboard[y][x + i] = ship;
 		}
 	}
 
 	receiveAttack([y, x]) {
-		if (this.board[y][x] != 0 && this.board[y][x] != 1) {
-			this.board[y][x].hit();
+		if (this.gameboard[y][x] != 0 && this.historyBoard[y][x] != 1) {
+			this.gameboard[y][x].hit();
+			this.historyBoard[y][x] = 1;
 		} else {
-			this.board[y][x] = 1;
+			this.historyBoard[y][x] = 1;
 		}
 	}
 }
