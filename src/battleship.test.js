@@ -1,4 +1,5 @@
 import { Ship } from "./battleship";
+import { Gameboard } from "./battleship";
 
 test("hit function", () => {
 	const ship = new Ship(3, 0, false);
@@ -18,4 +19,23 @@ test("check sunk", () => {
 
 	ship.hit();
 	expect(ship.isSunk()).toBe(true);
+});
+
+test("blank board", () => {
+	const board = new Gameboard();
+
+	expect(board.board[0].length).toBe(10);
+	expect(board.board.length).toBe(10);
+});
+
+test("place ship", () => {
+	const board = new Gameboard();
+	const ship = new Ship(3, 0, false);
+
+	board.place(ship, [0, 0]);
+
+	expect(board.board[0][0]).toEqual(ship);
+	expect(board.board[1][0]).toEqual(ship);
+	expect(board.board[2][0]).toEqual(ship);
+	expect(board.board[3][0]).not.toEqual(ship);
 });
