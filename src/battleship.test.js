@@ -1,5 +1,6 @@
 import { Ship } from "./battleship";
 import { Gameboard } from "./battleship";
+import { Player } from "./battleship";
 
 test("hit function", () => {
 	const ship = new Ship(3, 0, false);
@@ -118,4 +119,10 @@ test("all ships sank, mult ship", () => {
 	board.receiveAttack([4, 1]);
 
 	expect(board.allSunk()).toBe(false);
+});
+
+test("player board creation", () => {
+	const playerOne = new Player();
+
+	expect(playerOne.board).toEqual(new Gameboard());
 });

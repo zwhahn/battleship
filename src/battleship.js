@@ -66,3 +66,9 @@ export class Gameboard {
 		return true;
 	}
 }
+
+export class Player {
+	constructor() {
+		this.board = new Gameboard();
+	}
+}
