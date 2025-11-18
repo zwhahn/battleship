@@ -29,9 +29,17 @@ export class Gameboard {
 		}
 	}
 
-	place(ship, [x, y]) {
+	place(ship, [y, x]) {
 		for (let i = 0; i < ship.length; i++) {
-			this.board[x + i][y] = ship;
+			this.board[y][x + i] = ship;
+		}
+	}
+
+	receiveAttack([y, x]) {
+		if (this.board[y][x] != 0) {
+			this.board[y][x].hit();
+		} else {
+			this.board[y][x] = 1;
 		}
 	}
 }

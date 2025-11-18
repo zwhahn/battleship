@@ -35,7 +35,29 @@ test("place ship", () => {
 	board.place(ship, [0, 0]);
 
 	expect(board.board[0][0]).toEqual(ship);
-	expect(board.board[1][0]).toEqual(ship);
-	expect(board.board[2][0]).toEqual(ship);
-	expect(board.board[3][0]).not.toEqual(ship);
+	expect(board.board[0][1]).toEqual(ship);
+	expect(board.board[0][2]).toEqual(ship);
+	expect(board.board[0][3]).not.toEqual(ship);
+});
+
+test("hit ship", () => {
+	const board = new Gameboard();
+	const ship = new Ship(3, 0, false);
+	board.place(ship, [0, 0]);
+
+	board.receiveAttack([0, 0]);
+	expect(board.board[0][0].hits).toBe(1);
+
+	board.receiveAttack([0, 1]);
+	expect(board.board[0][1].hits).toBe(2);
+
+	board.receiveAttack([0, 2]);
+	expect(board.board[0][2].hits).toBe(3);
+});
+
+test("missed ship", () => {
+	const board = new Gameboard();
+	board.receiveAttack([3, 2]);
+
+	expect(board.board[3][2]).toBe(1);
 });
