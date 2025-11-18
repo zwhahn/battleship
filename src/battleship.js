@@ -36,7 +36,7 @@ export class Gameboard {
 	}
 
 	receiveAttack([y, x]) {
-		if (this.board[y][x] != 0) {
+		if (this.board[y][x] != 0 && this.board[y][x] != 1) {
 			this.board[y][x].hit();
 		} else {
 			this.board[y][x] = 1;

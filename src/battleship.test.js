@@ -61,3 +61,13 @@ test("missed ship", () => {
 
 	expect(board.board[3][2]).toBe(1);
 });
+
+test("already guessed, no ship", () => {
+	const board = new Gameboard();
+	board.receiveAttack([3, 2]);
+
+	expect(board.board[3][2]).toBe(1);
+
+	board.receiveAttack([3, 2]);
+	expect(board.board[3][2]).toBe(1);
+});
