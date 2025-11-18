@@ -74,7 +74,13 @@ test("already guessed, no ship", () => {
 	expect(board.historyBoard[3][2]).toBe(1);
 });
 
-test("already guessed, no ship", () => {
+test("already guessed, ship", () => {
 	const board = new Gameboard();
-	board.receiveAttack([3, 2]);
+	const ship = new Ship(3, 0, false);
+	board.place(ship, [0, 0]);
+
+	board.receiveAttack([0, 1]);
+	expect(board.gameboard[0][1].hits).toBe(1);
+	board.receiveAttack([0, 1]);
+	expect(board.gameboard[0][1].hits).toBe(1);
 });
