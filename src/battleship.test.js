@@ -84,3 +84,38 @@ test("already guessed, ship", () => {
 	board.receiveAttack([0, 1]);
 	expect(board.gameboard[0][1].hits).toBe(1);
 });
+
+test("all ships sank, 1 ship", () => {
+	const board = new Gameboard();
+	const ship = new Ship(3, 0, false);
+	board.place(ship, [0, 0]);
+	board.receiveAttack([0, 0]);
+	board.receiveAttack([0, 1]);
+	board.receiveAttack([0, 2]);
+
+	expect(board.allSunk()).toBe(true);
+});
+
+test("all ships sank, mult ship", () => {
+	const board = new Gameboard();
+	const ship = new Ship(3, 0, false);
+	board.place(ship, [0, 0]);
+	board.receiveAttack([0, 0]);
+	board.receiveAttack([0, 1]);
+	board.receiveAttack([0, 2]);
+
+	const shipTwo = new Ship(3, 0, false);
+	board.place(shipTwo, [2, 0]);
+	board.receiveAttack([2, 0]);
+	board.receiveAttack([2, 1]);
+	board.receiveAttack([2, 2]);
+
+	expect(board.allSunk()).toBe(true);
+
+	const shipThree = new Ship(3, 0, false);
+	board.place(shipThree, [4, 0]);
+	board.receiveAttack([4, 0]);
+	board.receiveAttack([4, 1]);
+
+	expect(board.allSunk()).toBe(false);
+});

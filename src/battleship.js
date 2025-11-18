@@ -1,5 +1,5 @@
 export class Ship {
-	constructor(length, hits, sunk) {
+	constructor(length, hits, sunk = false) {
 		this.length = length;
 		this.hits = hits;
 		this.sunk = sunk;
@@ -7,10 +7,12 @@ export class Ship {
 
 	hit() {
 		this.hits += 1;
+		this.isSunk();
 	}
 
 	isSunk() {
 		if (this.hits >= this.length) {
+			this.sunk = true;
 			return true;
 		} else {
 			return false;
@@ -49,5 +51,18 @@ export class Gameboard {
 		} else {
 			this.historyBoard[y][x] = 1;
 		}
+	}
+
+	allSunk() {
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				if (this.gameboard[i][j] !== 0) {
+					if (this.gameboard[i][j].sunk === false) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 }
