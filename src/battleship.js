@@ -1,5 +1,5 @@
 export class Ship {
-	constructor(length, hits, sunk = false) {
+	constructor(length, hits = 0, sunk = false) {
 		this.length = length;
 		this.hits = hits;
 		this.sunk = sunk;
@@ -70,5 +70,62 @@ export class Gameboard {
 export class Player {
 	constructor() {
 		this.board = new Gameboard();
+	}
+}
+
+export class Gameplay {
+	constructor(player1, player2) {
+		this.player1 = player1;
+		this.player2 = player2;
+		this.currentPlayer = player1;
+	}
+
+	placeShipsRandomly() {
+		const shipLibrary = {
+			carrier: new Ship(5),
+			battleship: new Ship(4),
+			cruiser: new Ship(3),
+			submarine: new Ship(3),
+			destroyer: new Ship(2),
+		};
+
+		for (let ship in shipLibrary) {
+			this.player1.board.place(ship, this.getRandomSquare());
+			this.player2.board.place(ship, this.getRandomSquare());
+		}
+	}
+
+	handlePlayerMove(y, x) {
+		const enemyBoard = this.getEnemyBoard();
+		enemyBoard.receiveAttack([y, x]);
+		this.switchTurns();
+	}
+
+	switchTurns() {
+		if (this.currentPlayer == this.player1) {
+			this.currentPlayer = this.player2;
+			this.computerMove();
+		} else {
+			this.currentPlayer = this.player1;
+		}
+	}
+
+	getEnemyBoard() {
+		if (this.currentPlayer === this.player1) {
+			return this.player2.board;
+		} else {
+			return this.player1.board;
+		}
+	}
+
+	computerMove() {
+		const [y, x] = this.getRandomSquare();
+		this.handlePlayerMove(y, x);
+	}
+
+	getRandomSquare() {
+		const y = Math.round(Math.random() * 9);
+		const x = Math.round(Math.random() * 9);
+		return [y, x];
 	}
 }

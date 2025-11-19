@@ -1,6 +1,7 @@
 import { Ship } from "./battleship";
 import { Gameboard } from "./battleship";
 import { Player } from "./battleship";
+import { Gameplay } from "./battleship";
 
 test("hit function", () => {
 	const ship = new Ship(3, 0, false);
@@ -125,4 +126,14 @@ test("player board creation", () => {
 	const playerOne = new Player();
 
 	expect(playerOne.board).toEqual(new Gameboard());
+});
+
+test("take turn", () => {
+	const player1 = new Player();
+	const player2 = new Player();
+	const game = new Gameplay(player1, player2);
+	game.handlePlayerMove(1, 0);
+	expect(player2.board.historyBoard[1][0]).toBe(1);
+	game.handlePlayerMove(1, 1);
+	expect(player2.board.historyBoard[1][1]).toBe(1);
 });
