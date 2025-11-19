@@ -134,6 +134,7 @@ test("take turn", () => {
 	const game = new Gameplay(player1, player2);
 	game.handlePlayerMove(1, 0);
 	expect(player2.board.historyBoard[1][0]).toBe(1);
+	game.computerMove();
 	game.handlePlayerMove(1, 1);
 	expect(player2.board.historyBoard[1][1]).toBe(1);
 });
