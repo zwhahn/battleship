@@ -58,11 +58,21 @@ export class Gameboard {
 	}
 
 	receiveAttack([y, x]) {
-		if (this.gameboard[y][x] != 0 && this.historyBoard[y][x] != 1) {
-			this.gameboard[y][x].hit();
+		if (!this.alreadyPlaced([y, x])) {
+			if (this.gameboard[y][x] !== 0) {
+				this.gameboard[y][x].hit();
+			}
 			this.historyBoard[y][x] = 1;
 		} else {
 			this.historyBoard[y][x] = 1;
+		}
+	}
+
+	alreadyPlaced([y, x]) {
+		if (this.historyBoard[y][x] == 1) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -130,7 +140,6 @@ export class Gameplay {
 	switchTurns() {
 		if (this.currentPlayer == this.player1) {
 			this.currentPlayer = this.player2;
-			this.computerMove();
 		} else {
 			this.currentPlayer = this.player1;
 		}
@@ -145,8 +154,18 @@ export class Gameplay {
 	}
 
 	computerMove() {
-		const [y, x] = this.getRandomSquare();
-		this.handlePlayerMove(y, x);
+		let moved = false;
+		let y, x;
+
+		while (!moved) {
+			[y, x] = this.getRandomSquare();
+			if (!this.getEnemyBoard().alreadyPlaced([y, x])) {
+				this.handlePlayerMove(y, x);
+				moved = true;
+			}
+		}
+
+		return [y, x];
 	}
 
 	getRandomSquare() {

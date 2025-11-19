@@ -6,14 +6,28 @@ const player2 = new Player();
 const game = new Gameplay(player1, player2);
 game.placeShipsRandomly();
 
-const board = document.querySelector(".board-container");
+const playerBoards = document.getElementsByClassName("board-container");
+const playerOneBoard = playerBoards[0];
+const playerTwoBoard = playerBoards[1];
+
+// Player 1's Board
+for (let y = 0; y < 10; y++) {
+	for (let x = 0; x < 10; x++) {
+		const cell = document.createElement("div");
+		cell.classList.add("cell");
+		playerOneBoard.appendChild(cell);
+
+		cell.dataset.y = y;
+		cell.dataset.x = x;
+	}
+}
 
 // Player 2's Board
 for (let y = 0; y < 10; y++) {
 	for (let x = 0; x < 10; x++) {
 		const cell = document.createElement("div");
 		cell.classList.add("cell");
-		board.appendChild(cell);
+		playerTwoBoard.appendChild(cell);
 
 		cell.dataset.y = y;
 		cell.dataset.x = x;
@@ -23,16 +37,27 @@ for (let y = 0; y < 10; y++) {
 			const cy = e.target.dataset.y;
 
 			game.handlePlayerMove(cy, cx);
-
-			const cellContent = player2.board.gameboard[cy][cx];
-
-			if (cellContent !== 0) {
-				e.target.classList.add("hit");
-			} else {
-				e.target.classList.add("miss");
-			}
-
-			e.target.style.pointerEvents = "none";
+			updateCellColor(playerTwoBoard, cy, cx, player2.board);
+			computerMove();
 		});
 	}
+}
+
+function updateCellColor(boardElement, y, x, playerBoard) {
+	const cell = boardElement.querySelector(
+		`.cell[data-y="${y}"][data-x="${x}"]`,
+	);
+
+	if (playerBoard.gameboard[y][x] !== 0) {
+		cell.classList.add("hit");
+	} else {
+		cell.classList.add("miss");
+	}
+
+	cell.style.pointerEvents = "none";
+}
+
+function computerMove() {
+	const [ry, rx] = game.computerMove();
+	updateCellColor(playerOneBoard, ry, rx, player1.board);
 }

@@ -3,13 +3,18 @@
 	--white: #f2f2f2;
 	--black: #0d1b2a;
 
-	--miss: #e0e1dd;
+	/* --miss: #e0e1dd; */
 	--hit: #ae2012;
+	--miss: orange;
 }
 
 * {
 	margin: 0px;
 	background-color: var(--white);
+}
+
+.page-container {
+	display: flex;
 }
 
 .board-container {
