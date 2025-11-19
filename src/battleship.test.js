@@ -137,3 +137,34 @@ test("take turn", () => {
 	game.handlePlayerMove(1, 1);
 	expect(player2.board.historyBoard[1][1]).toBe(1);
 });
+
+test("ship overlap", () => {
+	const board = new Gameboard();
+	const ship1 = new Ship(3, 0, false);
+	board.place(ship1, [0, 0]);
+	const ship2 = new Ship(4, 0, false);
+	board.place(ship2, [0, 2]);
+	expect(board.gameboard[0][2]).toEqual(ship1);
+	expect(board.gameboard[0][3]).not.toEqual(ship1);
+	expect(board.gameboard[0][3]).not.toEqual(ship2);
+});
+
+test("view board", () => {
+	let player1 = new Player();
+	let player2 = new Player();
+	const game = new Gameplay(player1, player2);
+
+	game.placeShipsRandomly();
+
+	let shipCellCount = 0;
+
+	for (let row of player1.board.gameboard) {
+		for (let cell of row) {
+			if (cell !== 0) {
+				shipCellCount++;
+			}
+		}
+	}
+
+	expect(shipCellCount).toBe(17);
+});

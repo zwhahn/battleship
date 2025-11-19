@@ -39,9 +39,22 @@ export class Gameboard {
 	}
 
 	place(ship, [y, x]) {
-		for (let i = 0; i < ship.length; i++) {
-			this.gameboard[y][x + i] = ship;
+		if (!this.shipOverlap(ship, [y, x])) {
+			for (let i = 0; i < ship.length; i++) {
+				this.gameboard[y][x + i] = ship;
+			}
+			return true;
 		}
+		return false;
+	}
+
+	shipOverlap(ship, [y, x]) {
+		for (let i = 0; i < ship.length; i++) {
+			if (x + i > 9 || this.gameboard[y][x + i] != 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	receiveAttack([y, x]) {
@@ -89,9 +102,22 @@ export class Gameplay {
 			destroyer: new Ship(2),
 		};
 
+		// Player 1 placement
 		for (const ship of Object.values(shipLibrary)) {
-			this.player1.board.place(ship, this.getRandomSquare());
-			this.player2.board.place(ship, this.getRandomSquare());
+			let placed = false;
+			while (!placed) {
+				const coords = this.getRandomSquare();
+				placed = this.player1.board.place(ship, coords);
+			}
+		}
+
+		// Player 2 placement
+		for (const ship of Object.values(shipLibrary)) {
+			let placed = false;
+			while (!placed) {
+				const coords = this.getRandomSquare();
+				placed = this.player2.board.place(ship, coords);
+			}
 		}
 	}
 
