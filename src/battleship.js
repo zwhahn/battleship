@@ -89,7 +89,7 @@ export class Gameplay {
 			destroyer: new Ship(2),
 		};
 
-		for (let ship in shipLibrary) {
+		for (const ship of Object.values(shipLibrary)) {
 			this.player1.board.place(ship, this.getRandomSquare());
 			this.player2.board.place(ship, this.getRandomSquare());
 		}
