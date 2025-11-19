@@ -3,9 +3,8 @@
 	--white: #f2f2f2;
 	--black: #0d1b2a;
 
-	/* --miss: #e0e1dd; */
+	--miss: #e0e1ddb8;
 	--hit: #ae2012;
-	--miss: orange;
 }
 
 * {
