@@ -44,6 +44,21 @@ test("place ship", () => {
 	expect(board.gameboard[0][3]).not.toEqual(ship);
 });
 
+test("place ship, vertical", () => {
+	const board = new Gameboard();
+	const ship = new Ship(3, 0, false, false);
+
+	board.place(ship, [0, 9]);
+
+	expect(board.gameboard[0][9]).toEqual(ship);
+	expect(board.gameboard[1][9]).toEqual(ship);
+	expect(board.gameboard[2][9]).toEqual(ship);
+	expect(board.gameboard[3][9]).not.toEqual(ship);
+
+	board.place(ship, [9, 0]);
+	expect(board.gameboard[9][0]).not.toEqual(ship);
+});
+
 test("hit ship", () => {
 	const board = new Gameboard();
 	const ship = new Ship(3, 0, false);

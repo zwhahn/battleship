@@ -1,8 +1,9 @@
 export class Ship {
-	constructor(length, hits = 0, sunk = false) {
+	constructor(length, hits = 0, sunk = false, horizontal = true) {
 		this.length = length;
 		this.hits = hits;
 		this.sunk = sunk;
+		this.horizontal = horizontal;
 	}
 
 	hit() {
@@ -40,18 +41,35 @@ export class Gameboard {
 
 	place(ship, [y, x]) {
 		if (!this.shipOverlap(ship, [y, x])) {
-			for (let i = 0; i < ship.length; i++) {
-				this.gameboard[y][x + i] = ship;
+			if (ship.horizontal === true) {
+				for (let i = 0; i < ship.length; i++) {
+					this.gameboard[y][x + i] = ship;
+				}
+				return true;
 			}
-			return true;
+			if (ship.horizontal === false) {
+				for (let j = 0; j < ship.length; j++) {
+					this.gameboard[y + j][x] = ship;
+				}
+				return true;
+			}
 		}
 		return false;
 	}
 
 	shipOverlap(ship, [y, x]) {
-		for (let i = 0; i < ship.length; i++) {
-			if (x + i > 9 || this.gameboard[y][x + i] != 0) {
-				return true;
+		if (ship.horizontal === true) {
+			for (let i = 0; i < ship.length; i++) {
+				if (x + i > 9 || this.gameboard[y][x + i] != 0) {
+					return true;
+				}
+			}
+		}
+		if (ship.horizontal === false) {
+			for (let j = 0; j < ship.length; j++) {
+				if (y + j > 9 || this.gameboard[y + j][x] != 0) {
+					return true;
+				}
 			}
 		}
 		return false;
