@@ -13,6 +13,18 @@
 }
 
 .page-container {
+	display: grid;
+	grid-template-rows: 10% 85% 5%;
+	width: 100vw;
+	height: 100vh;
+}
+
+header {
+	font-family: VT323;
+	font-size: 3em;
+}
+
+#game-container {
 	display: flex;
 }
 
@@ -36,4 +48,24 @@
 
 .cell.miss {
 	background-color: var(--miss);
+}
+
+footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+footer a {
+	display: flex;
+	text-decoration: none;
+	align-items: center;
+	gap: 5px;
+	color: #000;
+	cursor: pointer;
+	padding: 5px;
+}
+
+footer img {
+	height: 1.3em;
 }
