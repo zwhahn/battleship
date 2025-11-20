@@ -12,6 +12,7 @@
 * {
 	margin: 0px;
 	background-color: var(--white);
+	box-sizing: border-box;
 	/* font-family: Arial, Helvetica, sans-serif; */
 }
 
@@ -35,18 +36,53 @@ h1 {
 	justify-content: space-around;
 }
 
-.board-container {
-	display: grid;
-	grid-template-columns: repeat(10, var(--cell-size));
-	grid-template-rows: repeat(10, var(--cell-size));
-	width: calc(10 * var(--cell-size));
-	margin-top: 20px;
-}
-
 .game-side {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+	margin-top: 20px;
+}
+
+.shipyard-and-board-container {
+	display: flex;
+	align-items: center;
+}
+
+.shipyard {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid black;
+	height: 100%;
+	width: calc(6 * var(--cell-size));
+	margin-right: 20px;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.shipyard h6 {
+	font-family: VT323;
+	font-size: 2rem;
+}
+
+.ship-piece {
+	display: grid;
+	grid-auto-flow: column;
+	background-color: black;
+	gap: 1px;
+	border: 1px solid black;
+}
+
+.ship-piece .cell {
+	background-color: var(--ship);
+}
+
+.board-container {
+	display: grid;
+	grid-template-columns: repeat(10, var(--cell-size));
+	grid-template-rows: repeat(10, var(--cell-size));
+	gap: 1px;
+	background-color: black;
+	border: 1px solid black;
 }
 
 .player-name {
@@ -55,10 +91,26 @@ h1 {
 	margin-top: 20px;
 }
 
+.random-fleet-btn {
+	background-color: var(--white);
+	font-family: VT323;
+	font-size: 1.2rem;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.random-fleet-btn:hover {
+	border: 2px solid var(--ship);
+}
+
+.random-fleet-btn:active {
+	background-color: var(--miss);
+}
+
 .cell {
 	height: var(--cell-size);
 	width: var(--cell-size);
-	border: 1px black solid;
+	/* border: 1px black solid; */
 	cursor: pointer;
 }
 
