@@ -135,6 +135,7 @@ export class Gameplay {
 			let placed = false;
 			while (!placed) {
 				const coords = this.getRandomSquare();
+				ship.horizontal = Math.random() < 0.5;
 				placed = this.player1.board.place(ship, coords);
 			}
 		}
@@ -144,6 +145,7 @@ export class Gameplay {
 			let placed = false;
 			while (!placed) {
 				const coords = this.getRandomSquare();
+				ship.horizontal = Math.random() < 0.5;
 				placed = this.player2.board.place(ship, coords);
 			}
 		}
