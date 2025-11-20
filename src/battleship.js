@@ -121,7 +121,7 @@ export class Gameplay {
 		this.currentPlayer = player1;
 	}
 
-	placeShipsRandomly() {
+	placeShipsRandomly(player1 = null, player2 = null) {
 		const shipLibrary = {
 			carrier: new Ship(5),
 			battleship: new Ship(4),
@@ -131,22 +131,26 @@ export class Gameplay {
 		};
 
 		// Player 1 placement
-		for (const ship of Object.values(shipLibrary)) {
-			let placed = false;
-			while (!placed) {
-				const coords = this.getRandomSquare();
-				ship.horizontal = Math.random() < 0.5;
-				placed = this.player1.board.place(ship, coords);
+		if (player1 !== null) {
+			for (const ship of Object.values(shipLibrary)) {
+				let placed = false;
+				while (!placed) {
+					const coords = this.getRandomSquare();
+					ship.horizontal = Math.random() < 0.5;
+					placed = this.player1.board.place(ship, coords);
+				}
 			}
 		}
 
 		// Player 2 placement
-		for (const ship of Object.values(shipLibrary)) {
-			let placed = false;
-			while (!placed) {
-				const coords = this.getRandomSquare();
-				ship.horizontal = Math.random() < 0.5;
-				placed = this.player2.board.place(ship, coords);
+		if (player2 !== null) {
+			for (const ship of Object.values(shipLibrary)) {
+				let placed = false;
+				while (!placed) {
+					const coords = this.getRandomSquare();
+					ship.horizontal = Math.random() < 0.5;
+					placed = this.player2.board.place(ship, coords);
+				}
 			}
 		}
 	}

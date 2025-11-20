@@ -13,7 +13,7 @@ const randomFleetBtn = document.querySelector("#random-fleet-btn");
 randomFleetBtn.addEventListener("click", () => {
 	player1.board = new Gameboard();
 	player2.board = new Gameboard();
-	game.placeShipsRandomly();
+	game.placeShipsRandomly(player1, player2);
 	drawPlayer1Board();
 	removeAllFromShipyard();
 	drawPlayer2Board();
@@ -25,13 +25,17 @@ resetBtn.addEventListener("click", () => {
 	player2 = new Player();
 	game = new Gameplay(player1, player2);
 	drawPlayer1Board();
+	game.placeShipsRandomly(null, player2);
 	drawPlayer2Board();
 	drawShipyard();
+	togglePlayer2Board();
 });
 
 drawPlayer1Board();
+game.placeShipsRandomly(null, player2);
 drawPlayer2Board();
 drawShipyard();
+togglePlayer2Board();
 
 function drawShipyard() {
 	removeAllFromShipyard();
@@ -66,7 +70,7 @@ function drawShipyard() {
 	});
 }
 
-function removeFromShipyard(shipName) {
+function removeOneFromShipyard(shipName) {
 	const shipSlot = document.getElementById(`${shipName}`);
 	shipSlot.innerHTML = "";
 }
@@ -76,6 +80,26 @@ function removeAllFromShipyard() {
 	for (const slot of shipSlots) {
 		slot.innerHTML = "";
 	}
+	togglePlayer2Board();
+}
+
+function togglePlayer2Board() {
+	const blocker = document.querySelector(".blocker");
+	if (!isShipyardEmpty()) {
+		blocker.style.zIndex = 100;
+	} else {
+		blocker.style.zIndex = 0;
+	}
+}
+
+function isShipyardEmpty() {
+	const shipSlots = document.getElementsByClassName("ship-slot");
+	for (const slot of shipSlots) {
+		if (slot.innerHTML !== "") {
+			return false;
+		}
+	}
+	return true;
 }
 
 // Player 1's Board
@@ -88,7 +112,7 @@ function drawPlayer1Board() {
 			if (player1.board.gameboard[y][x] !== 0) {
 				cell.classList.add("ship");
 			}
-			cell.classList.add("cell");
+			cell.classList.add("player1-cell", "cell");
 			playerOneBoard.appendChild(cell);
 
 			cell.dataset.y = y;
@@ -106,8 +130,9 @@ function drawPlayer1Board() {
 				const placed = placeShipOnBoard(shipSize, [y, x]);
 				console.log("placed: ", placed);
 				if (placed) {
-					removeFromShipyard(shipName);
+					removeOneFromShipyard(shipName);
 				}
+				togglePlayer2Board();
 			});
 		}
 	}
