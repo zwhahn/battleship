@@ -3,8 +3,10 @@
 	--white: #f2f2f2;
 	--black: #0d1b2a;
 
-	--miss: #e0e1ddb8;
-	--hit: #ae2012;
+	--miss: #96939b;
+	--hit: #ff1500;
+
+	--ship: #1aa7ce;
 }
 
 * {
@@ -66,6 +68,10 @@ h1 {
 
 .cell.miss {
 	background-color: var(--miss);
+}
+
+.ship {
+	background-color: var(--ship);
 }
 
 footer {

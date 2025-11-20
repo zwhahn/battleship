@@ -14,6 +14,9 @@ const playerTwoBoard = playerBoards[1];
 for (let y = 0; y < 10; y++) {
 	for (let x = 0; x < 10; x++) {
 		const cell = document.createElement("div");
+		if (player1.board.gameboard[y][x] !== 0) {
+			cell.classList.add("ship");
+		}
 		cell.classList.add("cell");
 		playerOneBoard.appendChild(cell);
 
