@@ -1,4 +1,4 @@
-import { Gameboard, Player } from "./battleship.js";
+import { Gameboard, Player, Ship } from "./battleship.js";
 import { Gameplay } from "./battleship.js";
 
 const player1 = new Player();
@@ -38,7 +38,12 @@ function drawShipyard() {
 		shipDiv.classList.add("ship-piece");
 		shipDiv.draggable = true;
 		shipDiv.dataset.name = ship.name;
-		shipDiv.dataset.length = ship.size;
+		shipDiv.dataset.size = ship.size;
+
+		shipDiv.addEventListener("dragstart", (e) => {
+			e.dataTransfer.setData("size", shipDiv.dataset.size);
+			e.dataTransfer.setData("name", shipDiv.dataset.name);
+		});
 
 		for (let i = 0; i < ship.size; i++) {
 			const cell = document.createElement("div");
@@ -46,6 +51,15 @@ function drawShipyard() {
 			shipDiv.appendChild(cell);
 		}
 	});
+}
+
+function removeFromShipyard(shipName) {
+	const shipyard = document.querySelector(".shipyard");
+	for (const child of shipyard.children) {
+		if (child.dataset.name === shipName) {
+			shipyard.removeChild(child);
+		}
+	}
 }
 
 // Player 1's Board
@@ -63,8 +77,39 @@ function drawPlayer1Board() {
 
 			cell.dataset.y = y;
 			cell.dataset.x = x;
+
+			cell.addEventListener("dragover", (e) => {
+				e.preventDefault();
+			});
+
+			cell.addEventListener("drop", (e) => {
+				const shipSize = parseInt(e.dataTransfer.getData("size"));
+				const shipName = e.dataTransfer.getData("name");
+				console.log("dropped");
+
+				const placed = placeShipOnBoard(shipSize, [y, x]);
+				console.log("placed: ", placed);
+				if (placed) {
+					removeFromShipyard(shipName);
+				}
+			});
 		}
 	}
+}
+
+function placeShipOnBoard(size, [y, x]) {
+	const ship = new Ship(size);
+
+	console.log(ship);
+
+	const placed = player1.board.place(ship, [y, x]);
+
+	if (placed) {
+		console.log("placed");
+		drawPlayer1Board();
+		return true;
+	}
+	return false;
 }
 
 // Player 2's Board
