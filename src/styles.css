@@ -10,22 +10,27 @@
 * {
 	margin: 0px;
 	background-color: var(--white);
+	/* font-family: Arial, Helvetica, sans-serif; */
 }
 
 .page-container {
 	display: grid;
-	grid-template-rows: 10% 85% 5%;
+	grid-template-rows: 15% 80% 5%;
 	width: 100vw;
 	height: 100vh;
 }
 
 header {
-	font-family: VT323;
-	font-size: 3em;
+	font-size: 3rem;
 }
 
-#game-container {
+h1 {
+	font-family: VT323;
+}
+
+#body {
 	display: flex;
+	justify-content: space-around;
 }
 
 .board-container {
@@ -33,6 +38,19 @@ header {
 	grid-template-columns: repeat(10, var(--cell-size));
 	grid-template-rows: repeat(10, var(--cell-size));
 	width: calc(10 * var(--cell-size));
+	margin-top: 20px;
+}
+
+.game-side {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.player-name {
+	font-family: VT323;
+	font-size: 2rem;
+	margin-top: 20px;
 }
 
 .cell {
@@ -66,6 +84,10 @@ footer a {
 	padding: 5px;
 }
 
+#github-link {
+	font-size: 100%;
+}
+
 footer img {
-	height: 1.3em;
+	height: 1.3rem;
 }
