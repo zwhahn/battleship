@@ -23,17 +23,27 @@
 					<div class="shipyard-and-board-container">
 						<div class="shipyard">
 							<h6>Shipyard</h6>
+							<div class="ship-slot" id="carrier"></div>
+							<div class="ship-slot" id="battleship"></div>
+							<div class="ship-slot" id="cruiser"></div>
+							<div class="ship-slot" id="submarine"></div>
+							<div class="ship-slot" id="destroyer"></div>
 						</div>
 						<div class="board-container"></div>
 					</div>
 					<div class="player-name">Player 1</div>
-					<button class="random-fleet-btn" type="button">
-						Randomize Fleet
-					</button>
+					<div class="btn-container">
+						<button class="btn" id="random-fleet-btn" type="button">
+							Randomize Fleet
+						</button>
+						<button class="btn" id="reset" type="button">
+							Reset
+						</button>
+					</div>
 				</div>
 				<div class="game-side" id="player2">
 					<div class="board-container"></div>
-					<div class="player-name">Player 2</div>
+					<div class="player-name">CPU</div>
 				</div>
 			</div>
 			<footer>

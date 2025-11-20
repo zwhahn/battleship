@@ -1,21 +1,32 @@
 import { Gameboard, Player, Ship } from "./battleship.js";
 import { Gameplay } from "./battleship.js";
 
-const player1 = new Player();
-const player2 = new Player();
-const game = new Gameplay(player1, player2);
+let player1 = new Player();
+let player2 = new Player();
+let game = new Gameplay(player1, player2);
 
 const playerBoards = document.getElementsByClassName("board-container");
 const playerOneBoard = playerBoards[0];
 const playerTwoBoard = playerBoards[1];
 
-const randomFleetBtn = document.querySelector(".random-fleet-btn");
+const randomFleetBtn = document.querySelector("#random-fleet-btn");
 randomFleetBtn.addEventListener("click", () => {
 	player1.board = new Gameboard();
 	player2.board = new Gameboard();
 	game.placeShipsRandomly();
 	drawPlayer1Board();
+	removeAllFromShipyard();
 	drawPlayer2Board();
+});
+
+const resetBtn = document.querySelector("#reset");
+resetBtn.addEventListener("click", () => {
+	player1 = new Player();
+	player2 = new Player();
+	game = new Gameplay(player1, player2);
+	drawPlayer1Board();
+	drawPlayer2Board();
+	drawShipyard();
 });
 
 drawPlayer1Board();
@@ -23,6 +34,7 @@ drawPlayer2Board();
 drawShipyard();
 
 function drawShipyard() {
+	removeAllFromShipyard();
 	const ships = [
 		{ name: "carrier", size: 5 },
 		{ name: "battleship", size: 4 },
@@ -30,15 +42,16 @@ function drawShipyard() {
 		{ name: "submarine", size: 3 },
 		{ name: "destroyer", size: 2 },
 	];
-	const shipyard = document.querySelector(".shipyard");
 	ships.forEach((ship) => {
 		const shipDiv = document.createElement("div");
-		shipyard.appendChild(shipDiv);
 
 		shipDiv.classList.add("ship-piece");
 		shipDiv.draggable = true;
 		shipDiv.dataset.name = ship.name;
 		shipDiv.dataset.size = ship.size;
+
+		const shipSlot = document.getElementById(`${ship.name}`);
+		shipSlot.appendChild(shipDiv);
 
 		shipDiv.addEventListener("dragstart", (e) => {
 			e.dataTransfer.setData("size", shipDiv.dataset.size);
@@ -54,11 +67,14 @@ function drawShipyard() {
 }
 
 function removeFromShipyard(shipName) {
-	const shipyard = document.querySelector(".shipyard");
-	for (const child of shipyard.children) {
-		if (child.dataset.name === shipName) {
-			shipyard.removeChild(child);
-		}
+	const shipSlot = document.getElementById(`${shipName}`);
+	shipSlot.innerHTML = "";
+}
+
+function removeAllFromShipyard() {
+	const shipSlots = document.getElementsByClassName("ship-slot");
+	for (const slot of shipSlots) {
+		slot.innerHTML = "";
 	}
 }
 

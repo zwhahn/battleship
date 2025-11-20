@@ -29,6 +29,7 @@ header {
 
 h1 {
 	font-family: VT323;
+	padding-left: 20px;
 }
 
 #body {
@@ -61,11 +62,16 @@ h1 {
 
 .shipyard h6 {
 	font-family: VT323;
-	font-size: 2rem;
+	font-size: 2.5rem;
+}
+
+.ship-slot {
+	height: 16%;
+	align-content: center;
 }
 
 .ship-piece {
-	display: grid;
+	display: flex;
 	grid-auto-flow: column;
 	background-color: black;
 	gap: 1px;
@@ -91,7 +97,7 @@ h1 {
 	margin-top: 20px;
 }
 
-.random-fleet-btn {
+.btn {
 	background-color: var(--white);
 	font-family: VT323;
 	font-size: 1.2rem;
@@ -99,11 +105,12 @@ h1 {
 	margin-top: 10px;
 }
 
-.random-fleet-btn:hover {
+.btn:hover {
 	border: 2px solid var(--ship);
+	box-sizing: border-box;
 }
 
-.random-fleet-btn:active {
+.btn:active {
 	background-color: var(--miss);
 }
 
@@ -143,7 +150,8 @@ footer a {
 }
 
 #github-link {
-	font-size: 100%;
+	font-size: 1.5rem;
+	font-family: VT323;
 }
 
 footer img {
