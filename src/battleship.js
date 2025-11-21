@@ -126,16 +126,8 @@ export class Gameplay {
 		this.targetStack = [];
 	}
 
-	placeShipsRandomly(player1 = null, player2 = null) {
-		const shipLibrary1 = {
-			carrier: new Ship(5),
-			battleship: new Ship(4),
-			cruiser: new Ship(3),
-			submarine: new Ship(3),
-			destroyer: new Ship(2),
-		};
-
-		const shipLibrary2 = {
+	placeShipsRandomly(player) {
+		const shipLibrary = {
 			carrier: new Ship(5),
 			battleship: new Ship(4),
 			cruiser: new Ship(3),
@@ -144,25 +136,13 @@ export class Gameplay {
 		};
 
 		// Player 1 placement
-		if (player1 !== null) {
-			for (const ship of Object.values(shipLibrary1)) {
+		if (player !== null) {
+			for (const ship of Object.values(shipLibrary)) {
 				let placed = false;
 				while (!placed) {
 					const coords = this.getRandomSquare();
 					ship.horizontal = Math.random() < 0.5;
-					placed = this.player1.board.place(ship, coords);
-				}
-			}
-		}
-
-		// Player 2 placement
-		if (player2 !== null) {
-			for (const ship of Object.values(shipLibrary2)) {
-				let placed = false;
-				while (!placed) {
-					const coords = this.getRandomSquare();
-					ship.horizontal = Math.random() < 0.5;
-					placed = this.player2.board.place(ship, coords);
+					placed = player.board.place(ship, coords);
 				}
 			}
 		}

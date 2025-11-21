@@ -13,7 +13,8 @@ const randomFleetBtn = document.querySelector("#random-fleet-btn");
 randomFleetBtn.addEventListener("click", () => {
 	player1.board = new Gameboard();
 	player2.board = new Gameboard();
-	game.placeShipsRandomly(player1, player2);
+	game.placeShipsRandomly(player1);
+	game.placeShipsRandomly(player2);
 	drawPlayer1Board();
 	removeAllFromShipyard();
 	drawPlayer2Board();
@@ -275,9 +276,12 @@ function drawPlayer2Board() {
 	for (let y = 0; y < 10; y++) {
 		for (let x = 0; x < 10; x++) {
 			const cell = document.createElement("div");
-			// if (player2.board.gameboard[y][x] !== 0) {
-			// 	cell.classList.add("ship");
-			// }
+
+			// View CPU ships
+			if (player2.board.gameboard[y][x] !== 0) {
+				cell.classList.add("ship");
+			}
+
 			cell.classList.add("cell");
 			playerTwoBoard.appendChild(cell);
 
