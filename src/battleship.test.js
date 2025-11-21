@@ -170,7 +170,7 @@ test("view board", () => {
 	let player2 = new Player();
 	const game = new Gameplay(player1, player2);
 
-	game.placeShipsRandomly();
+	game.placeShipsRandomly(player1);
 
 	let shipCellCount = 0;
 
