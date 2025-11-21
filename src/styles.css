@@ -175,6 +175,11 @@ h1 {
 	background-color: var(--ship-selected);
 }
 
+.game-active {
+	opacity: 80%;
+	pointer-events: none;
+}
+
 footer {
 	display: flex;
 	justify-content: center;

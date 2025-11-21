@@ -275,6 +275,11 @@ function drawPlayer2Board() {
 
 				game.handlePlayerMove(cy, cx);
 				updateCellColor(playerTwoBoard, cy, cx, player2.board);
+				for (let child of document.querySelector("#player1-board")
+					.childNodes) {
+					child.classList.add("game-active");
+					child.classList.remove("recent-ship");
+				}
 				computerMove();
 			});
 		}
