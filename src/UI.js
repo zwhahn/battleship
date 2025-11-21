@@ -31,15 +31,15 @@ resetBtn.addEventListener("click", () => {
 	togglePlayer2Board();
 });
 
+let recentPlacedShip = null;
+let recentX = null;
+let recentY = null;
+
 drawPlayer1Board();
 game.placeShipsRandomly(null, player2);
 drawPlayer2Board();
 drawShipyard();
 togglePlayer2Board();
-
-let recentPlacedShip = null;
-let recentX = null;
-let recentY = null;
 
 function drawShipyard() {
 	removeAllFromShipyard();
@@ -157,6 +157,12 @@ function drawPlayer1Board() {
 					e.dataTransfer.setData("originX", originX);
 				});
 			}
+
+			console.log("recentPlacedShip:", recentPlacedShip);
+			if (player1.board.gameboard[y][x] === recentPlacedShip) {
+				cell.classList.add("recent-ship");
+			}
+
 			cell.classList.add("player1-cell", "cell");
 			playerOneBoard.appendChild(cell);
 

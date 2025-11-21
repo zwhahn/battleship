@@ -7,6 +7,7 @@
 	--hit: #ff1500;
 
 	--ship: #1aa7ce;
+	--ship-selected: #19677c;
 }
 
 * {
@@ -168,6 +169,10 @@ h1 {
 
 #player1-board .ship:active {
 	cursor: grabbing;
+}
+
+.recent-ship {
+	background-color: var(--ship-selected);
 }
 
 footer {
