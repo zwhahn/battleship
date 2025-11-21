@@ -72,11 +72,14 @@ h1 {
 
 .ship-piece {
 	display: flex;
-	grid-auto-flow: column;
 	background-color: black;
 	gap: 1px;
 	border: 1px solid black;
 	cursor: grab;
+}
+
+.ship-piece .vertical {
+	flex-direction: column;
 }
 
 .ship-piece .cell {

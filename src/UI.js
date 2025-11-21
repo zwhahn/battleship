@@ -37,14 +37,19 @@ drawPlayer2Board();
 drawShipyard();
 togglePlayer2Board();
 
+let recentPlacedShip = null;
+let recentPlacedShipName = null;
+let recentX = null;
+let recentY = null;
+
 function drawShipyard() {
 	removeAllFromShipyard();
 	const ships = [
-		{ name: "carrier", size: 5 },
-		{ name: "battleship", size: 4 },
-		{ name: "cruiser", size: 3 },
-		{ name: "submarine", size: 3 },
-		{ name: "destroyer", size: 2 },
+		{ name: "carrier", size: 5, horizontal: true, position: null },
+		{ name: "battleship", size: 4, horizontal: true, position: null },
+		{ name: "cruiser", size: 3, horizontal: true, position: null },
+		{ name: "submarine", size: 3, horizontal: true, position: null },
+		{ name: "destroyer", size: 2, horizontal: true, position: null },
 	];
 	ships.forEach((ship) => {
 		const shipDiv = document.createElement("div");
@@ -53,6 +58,7 @@ function drawShipyard() {
 		shipDiv.draggable = true;
 		shipDiv.dataset.name = ship.name;
 		shipDiv.dataset.size = ship.size;
+		shipDiv.dataset.horizontal = ship.horizontal;
 
 		const shipSlot = document.getElementById(`${ship.name}`);
 		shipSlot.appendChild(shipDiv);
@@ -60,6 +66,7 @@ function drawShipyard() {
 		shipDiv.addEventListener("dragstart", (e) => {
 			e.dataTransfer.setData("size", shipDiv.dataset.size);
 			e.dataTransfer.setData("name", shipDiv.dataset.name);
+			e.dataTransfer.setData("horizontal", shipDiv.dataset.horizontal);
 		});
 
 		for (let i = 0; i < ship.size; i++) {
@@ -69,6 +76,32 @@ function drawShipyard() {
 		}
 	});
 }
+
+document.addEventListener("keydown", (e) => {
+	if (!recentPlacedShip) {
+		return;
+	}
+
+	if (e.code === "Space") {
+		console.log("rotate: ", recentPlacedShip);
+		e.preventDefault();
+		removeShipFromBoard(recentPlacedShip);
+		recentPlacedShip.horizontal = !recentPlacedShip.horizontal;
+
+		const placed = player1.board.place(recentPlacedShip, [
+			recentY,
+			recentX,
+		]);
+
+		if (!placed) {
+			recentPlacedShip.horizontal = !recentPlacedShip.horizontal;
+			player1.board.place(recentPlacedShip, [recentY, recentX]);
+		}
+
+		drawPlayer1Board();
+	}
+	console.log("keypress");
+});
 
 function removeOneFromShipyard(shipName) {
 	const shipSlot = document.getElementById(`${shipName}`);
@@ -125,32 +158,56 @@ function drawPlayer1Board() {
 			cell.addEventListener("drop", (e) => {
 				const shipSize = parseInt(e.dataTransfer.getData("size"));
 				const shipName = e.dataTransfer.getData("name");
+				const shipHorizontal = e.dataTransfer.getData("horizontal");
 				console.log("dropped");
 
-				const placed = placeShipOnBoard(shipSize, [y, x]);
+				const placed = placeShipOnBoard(
+					shipSize,
+					[y, x],
+					shipHorizontal,
+				);
 				console.log("placed: ", placed);
 				if (placed) {
 					removeOneFromShipyard(shipName);
+					recentPlacedShipName = shipName;
 				}
+
 				togglePlayer2Board();
 			});
 		}
 	}
 }
 
-function placeShipOnBoard(size, [y, x]) {
-	const ship = new Ship(size);
+function placeShipOnBoard(size, [y, x], horizontal) {
+	const horizontalBool = horizontal === "true";
+	const ship = new Ship(size, 0, false, horizontalBool);
+	recentPlacedShip = ship;
+	recentX = x;
+	recentY = y;
 
 	console.log(ship);
 
 	const placed = player1.board.place(ship, [y, x]);
 
 	if (placed) {
-		console.log("placed");
+		console.log("placed: ", player1.board.gameboard[y][x]);
 		drawPlayer1Board();
 		return true;
 	}
 	return false;
+}
+
+function removeShipFromBoard(ship) {
+	console.log("trying to remove ship: ", ship);
+	for (let y = 0; y < 10; y++) {
+		for (let x = 0; x < 10; x++) {
+			console.log(player1.board.gameboard[y][x]);
+			if (player1.board.gameboard[y][x] === ship) {
+				console.log("found ship");
+				player1.board.gameboard[y][x] = 0;
+			}
+		}
+	}
 }
 
 // Player 2's Board
