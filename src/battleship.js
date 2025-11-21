@@ -9,6 +9,7 @@ export class Ship {
 	hit() {
 		this.hits += 1;
 		this.isSunk();
+		return true;
 	}
 
 	isSunk() {
@@ -78,7 +79,8 @@ export class Gameboard {
 	receiveAttack([y, x]) {
 		if (!this.alreadyPlaced([y, x])) {
 			if (this.gameboard[y][x] !== 0) {
-				this.gameboard[y][x].hit();
+				this.historyBoard[y][x] = 1;
+				return this.gameboard[y][x].hit();
 			}
 			this.historyBoard[y][x] = 1;
 		} else {
@@ -119,10 +121,21 @@ export class Gameplay {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.currentPlayer = player1;
+
+		this.lastHit = null;
+		this.targetStack = [];
 	}
 
 	placeShipsRandomly(player1 = null, player2 = null) {
-		const shipLibrary = {
+		const shipLibrary1 = {
+			carrier: new Ship(5),
+			battleship: new Ship(4),
+			cruiser: new Ship(3),
+			submarine: new Ship(3),
+			destroyer: new Ship(2),
+		};
+
+		const shipLibrary2 = {
 			carrier: new Ship(5),
 			battleship: new Ship(4),
 			cruiser: new Ship(3),
@@ -132,7 +145,7 @@ export class Gameplay {
 
 		// Player 1 placement
 		if (player1 !== null) {
-			for (const ship of Object.values(shipLibrary)) {
+			for (const ship of Object.values(shipLibrary1)) {
 				let placed = false;
 				while (!placed) {
 					const coords = this.getRandomSquare();
@@ -144,7 +157,7 @@ export class Gameplay {
 
 		// Player 2 placement
 		if (player2 !== null) {
-			for (const ship of Object.values(shipLibrary)) {
+			for (const ship of Object.values(shipLibrary2)) {
 				let placed = false;
 				while (!placed) {
 					const coords = this.getRandomSquare();
@@ -157,8 +170,9 @@ export class Gameplay {
 
 	handlePlayerMove(y, x) {
 		const enemyBoard = this.getEnemyBoard();
-		enemyBoard.receiveAttack([y, x]);
+		let hit = enemyBoard.receiveAttack([y, x]);
 		this.switchTurns();
+		return hit;
 	}
 
 	switchTurns() {
@@ -179,16 +193,31 @@ export class Gameplay {
 
 	computerMove() {
 		let moved = false;
+		let hit;
 		let y, x;
 
 		while (!moved) {
-			[y, x] = this.getRandomSquare();
-			if (!this.getEnemyBoard().alreadyPlaced([y, x])) {
-				this.handlePlayerMove(y, x);
-				moved = true;
+			if (this.targetStack.length > 0) {
+				[y, x] = this.targetStack.pop();
+				console.log("target: ", [y, x]);
+				if (!this.getEnemyBoard().alreadyPlaced([y, x])) {
+					hit = this.handlePlayerMove(y, x);
+					moved = true;
+				}
+			} else {
+				[y, x] = this.getRandomSquare();
+				if (!this.getEnemyBoard().alreadyPlaced([y, x])) {
+					hit = this.handlePlayerMove(y, x);
+					moved = true;
+				}
 			}
 		}
 
+		if (hit) {
+			this.getAdjacentSquares([y, x]);
+		}
+
+		console.log("Target Stack: ", this.targetStack);
 		return [y, x];
 	}
 
@@ -196,5 +225,20 @@ export class Gameplay {
 		const y = Math.round(Math.random() * 9);
 		const x = Math.round(Math.random() * 9);
 		return [y, x];
+	}
+
+	getAdjacentSquares([currentY, currentX]) {
+		if (currentY - 1 >= 0) {
+			this.targetStack.push([currentY - 1, currentX]);
+		}
+		if (currentY + 1 < 10) {
+			this.targetStack.push([currentY + 1, currentX]);
+		}
+		if (currentX - 1 >= 0) {
+			this.targetStack.push([currentY, currentX - 1]);
+		}
+		if (currentX + 1 < 10) {
+			this.targetStack.push([currentY, currentX + 1]);
+		}
 	}
 }
