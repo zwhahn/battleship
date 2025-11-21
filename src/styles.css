@@ -53,12 +53,24 @@
 }
 
 header {
-	font-size: 3rem;
 	font-family: VT323;
 	padding-left: 87px;
 	display: flex;
 	align-items: center;
-	justify-content: left;
+	width: 100%;
+	/* background-color: red; */
+}
+
+h1 {
+	font-size: 6rem;
+	justify-self: left;
+	padding-right: 800px;
+}
+
+header .rules {
+	font-size: 1.7rem;
+	padding-left: 20px;
+	padding-top: 35px;
 }
 
 #body {

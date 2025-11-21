@@ -279,9 +279,9 @@ function drawPlayer2Board() {
 			const cell = document.createElement("div");
 
 			// View CPU ships
-			if (player2.board.gameboard[y][x] !== 0) {
-				cell.classList.add("ship");
-			}
+			// if (player2.board.gameboard[y][x] !== 0) {
+			// 	cell.classList.add("ship");
+			// }
 
 			cell.classList.add("cell");
 			playerTwoBoard.appendChild(cell);
