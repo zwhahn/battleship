@@ -28,7 +28,7 @@ resetBtn.addEventListener("click", () => {
 	player2 = new Player();
 	game = new Gameplay(player1, player2);
 	drawPlayer1Board();
-	game.placeShipsRandomly(null, player2);
+	game.placeShipsRandomly(player2);
 	drawPlayer2Board();
 	drawShipyard();
 	togglePlayer2Board();
@@ -48,7 +48,7 @@ function newGame() {
 	player2 = new Player();
 	game = new Gameplay(player1, player2);
 	drawPlayer1Board();
-	game.placeShipsRandomly(null, player2);
+	game.placeShipsRandomly(player2);
 	drawPlayer2Board();
 	drawShipyard();
 	togglePlayer2Board();
@@ -135,7 +135,6 @@ function removeAllFromShipyard() {
 
 function togglePlayer2Board() {
 	const blocker = document.querySelector(".blocker");
-	// const player1Cells = document.querySelector("#player1-boards").childNodes();
 
 	if (!isShipyardEmpty()) {
 		blocker.style.zIndex = 100;
