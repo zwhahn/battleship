@@ -23,19 +23,17 @@ export class Ship {
 }
 
 export class Gameboard {
-	constructor() {
+	constructor(rows = 10, columns = 10) {
 		this.gameboard = [];
-		for (let i = 0; i < 10; i++) {
-			this.gameboard[i] = [];
-			for (let j = 0; j < 10; j++) {
-				this.gameboard[i][j] = 0;
-			}
-		}
 		this.historyBoard = [];
-		for (let i = 0; i < 10; i++) {
-			this.historyBoard[i] = [];
-			for (let j = 0; j < 10; j++) {
-				this.historyBoard[i][j] = 0;
+		this.rows = rows;
+		this.columns = columns;
+		for (let y = 0; y < this.rows; y++) {
+			this.gameboard[y] = [];
+			this.historyBoard[y] = [];
+			for (let x = 0; x < this.columns; x++) {
+				this.gameboard[y][x] = 0;
+				this.historyBoard[y][x] = 0;
 			}
 		}
 	}
@@ -61,14 +59,14 @@ export class Gameboard {
 	shipOverlap(ship, [y, x]) {
 		if (ship.horizontal === true) {
 			for (let i = 0; i < ship.length; i++) {
-				if (x + i > 9 || this.gameboard[y][x + i] != 0) {
+				if (x + i > this.columns - 1 || this.gameboard[y][x + i] != 0) {
 					return true;
 				}
 			}
 		}
 		if (ship.horizontal === false) {
 			for (let j = 0; j < ship.length; j++) {
-				if (y + j > 9 || this.gameboard[y + j][x] != 0) {
+				if (y + j > this.rows - 1 || this.gameboard[y + j][x] != 0) {
 					return true;
 				}
 			}
@@ -97,10 +95,10 @@ export class Gameboard {
 	}
 
 	allSunk() {
-		for (let i = 0; i < 10; i++) {
-			for (let j = 0; j < 10; j++) {
-				if (this.gameboard[i][j] !== 0) {
-					if (this.gameboard[i][j].sunk === false) {
+		for (let y = 0; y < this.rows; y++) {
+			for (let x = 0; x < this.columns; x++) {
+				if (this.gameboard[y][x] !== 0) {
+					if (this.gameboard[y][x].sunk === false) {
 						return false;
 					}
 				}
@@ -117,10 +115,12 @@ export class Player {
 }
 
 export class Gameplay {
-	constructor(player1, player2) {
+	constructor(player1, player2, rows = 10, columns = 10) {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.currentPlayer = player1;
+		this.rows = rows;
+		this.columns = columns;
 
 		this.lastHit = null;
 		this.targetStack = [];
@@ -135,7 +135,6 @@ export class Gameplay {
 			destroyer: new Ship(2),
 		};
 
-		// Player 1 placement
 		if (player !== null) {
 			for (const ship of Object.values(shipLibrary)) {
 				let placed = false;
@@ -202,8 +201,8 @@ export class Gameplay {
 	}
 
 	getRandomSquare() {
-		const y = Math.round(Math.random() * 9);
-		const x = Math.round(Math.random() * 9);
+		const y = Math.round(Math.random() * (this.rows - 1));
+		const x = Math.round(Math.random() * (this.columns - 1));
 		return [y, x];
 	}
 
@@ -211,13 +210,13 @@ export class Gameplay {
 		if (currentY - 1 >= 0) {
 			this.targetStack.push([currentY - 1, currentX]);
 		}
-		if (currentY + 1 < 10) {
+		if (currentY + 1 < this.rows) {
 			this.targetStack.push([currentY + 1, currentX]);
 		}
 		if (currentX - 1 >= 0) {
 			this.targetStack.push([currentY, currentX - 1]);
 		}
-		if (currentX + 1 < 10) {
+		if (currentX + 1 < this.columns) {
 			this.targetStack.push([currentY, currentX + 1]);
 		}
 	}
