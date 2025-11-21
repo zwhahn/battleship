@@ -100,7 +100,6 @@ document.addEventListener("keydown", (e) => {
 	}
 
 	if (e.code === "Space") {
-		console.log("rotate: ", recentPlacedShip);
 		e.preventDefault();
 		removeShipFromBoard(recentPlacedShip);
 		recentPlacedShip.horizontal = !recentPlacedShip.horizontal;
@@ -117,7 +116,6 @@ document.addEventListener("keydown", (e) => {
 
 		drawPlayer1Board();
 	}
-	console.log("keypress");
 });
 
 function removeOneFromShipyard(shipName) {
@@ -175,7 +173,6 @@ function drawPlayer1Board() {
 				});
 			}
 
-			console.log("recentPlacedShip:", recentPlacedShip);
 			if (player1.board.gameboard[y][x] === recentPlacedShip) {
 				cell.classList.add("recent-ship");
 			}
@@ -195,8 +192,6 @@ function drawPlayer1Board() {
 
 				// Ship has already been placed
 				if (moving === "true") {
-					console.log("exisiting ship");
-
 					const originY = parseInt(e.dataTransfer.getData("originY"));
 					const originX = parseInt(e.dataTransfer.getData("originX"));
 					const ship = player1.board.gameboard[originY][originX];
@@ -219,7 +214,6 @@ function drawPlayer1Board() {
 				const shipSize = parseInt(e.dataTransfer.getData("size"));
 				const shipName = e.dataTransfer.getData("name");
 				const shipHorizontal = e.dataTransfer.getData("horizontal");
-				console.log("dropped");
 
 				const placed = placeShipOnBoard(
 					shipSize,
@@ -227,7 +221,6 @@ function drawPlayer1Board() {
 					shipHorizontal,
 				);
 
-				console.log("placed: ", placed);
 				if (placed) {
 					removeOneFromShipyard(shipName);
 				}
@@ -245,12 +238,9 @@ function placeShipOnBoard(size, [y, x], horizontal) {
 	recentX = x;
 	recentY = y;
 
-	console.log(ship);
-
 	const placed = player1.board.place(ship, [y, x]);
 
 	if (placed) {
-		console.log("placed: ", player1.board.gameboard[y][x]);
 		drawPlayer1Board();
 		return true;
 	}
@@ -258,12 +248,9 @@ function placeShipOnBoard(size, [y, x], horizontal) {
 }
 
 function removeShipFromBoard(ship) {
-	console.log("trying to remove ship: ", ship);
 	for (let y = 0; y < rows; y++) {
 		for (let x = 0; x < columns; x++) {
-			console.log(player1.board.gameboard[y][x]);
 			if (player1.board.gameboard[y][x] === ship) {
-				console.log("found ship");
 				player1.board.gameboard[y][x] = 0;
 			}
 		}

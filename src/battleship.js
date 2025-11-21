@@ -178,7 +178,6 @@ export class Gameplay {
 		while (!moved) {
 			if (this.targetStack.length > 0) {
 				[y, x] = this.targetStack.pop();
-				console.log("target: ", [y, x]);
 				if (!this.getEnemyBoard().alreadyPlaced([y, x])) {
 					hit = this.handlePlayerMove(y, x);
 					moved = true;
@@ -196,7 +195,6 @@ export class Gameplay {
 			this.getAdjacentSquares([y, x]);
 		}
 
-		console.log("Target Stack: ", this.targetStack);
 		return [y, x];
 	}
 
