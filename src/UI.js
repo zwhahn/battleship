@@ -31,15 +31,30 @@ resetBtn.addEventListener("click", () => {
 	togglePlayer2Board();
 });
 
+const newGameBtn = document.querySelector("#new-game-btn");
+newGameBtn.addEventListener("click", () => {
+	newGame();
+});
+
 let recentPlacedShip = null;
 let recentX = null;
 let recentY = null;
 
-drawPlayer1Board();
-game.placeShipsRandomly(null, player2);
-drawPlayer2Board();
-drawShipyard();
-togglePlayer2Board();
+function newGame() {
+	player1 = new Player();
+	player2 = new Player();
+	game = new Gameplay(player1, player2);
+	drawPlayer1Board();
+	game.placeShipsRandomly(null, player2);
+	drawPlayer2Board();
+	drawShipyard();
+	togglePlayer2Board();
+	const gameOverScreen = document.querySelector(".game-over-screen");
+	gameOverScreen.classList.remove("show");
+	gameOverScreen.style.pointerEvents = "none";
+}
+
+newGame();
 
 function drawShipyard() {
 	removeAllFromShipyard();
@@ -280,7 +295,27 @@ function drawPlayer2Board() {
 					child.classList.add("game-active");
 					child.classList.remove("recent-ship");
 				}
+				if (player2.board.allSunk()) {
+					const gameOverScreen =
+						document.querySelector(".game-over-screen");
+					gameOverScreen.classList.toggle("show");
+					gameOverScreen.style.pointerEvents = "auto";
+
+					const gameOverText =
+						document.querySelector(".game-over-text");
+					gameOverText.textContent = "You Won!";
+				}
 				computerMove();
+				if (player1.board.allSunk()) {
+					const gameOverScreen =
+						document.querySelector(".game-over-screen");
+					gameOverScreen.classList.toggle("show");
+					gameOverScreen.style.pointerEvents = "auto";
+
+					const gameOverText =
+						document.querySelector(".game-over-text");
+					gameOverText.textContent = "CPU Won!";
+				}
 			});
 		}
 	}
