@@ -162,6 +162,14 @@ h1 {
 	background-color: var(--ship);
 }
 
+#player1-board .ship {
+	cursor: grab;
+}
+
+#player1-board .ship:active {
+	cursor: grabbing;
+}
+
 footer {
 	display: flex;
 	justify-content: center;

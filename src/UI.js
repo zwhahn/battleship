@@ -38,7 +38,6 @@ drawShipyard();
 togglePlayer2Board();
 
 let recentPlacedShip = null;
-let recentPlacedShipName = null;
 let recentX = null;
 let recentY = null;
 
@@ -118,6 +117,8 @@ function removeAllFromShipyard() {
 
 function togglePlayer2Board() {
 	const blocker = document.querySelector(".blocker");
+	// const player1Cells = document.querySelector("#player1-boards").childNodes();
+
 	if (!isShipyardEmpty()) {
 		blocker.style.zIndex = 100;
 	} else {
@@ -144,6 +145,17 @@ function drawPlayer1Board() {
 			const cell = document.createElement("div");
 			if (player1.board.gameboard[y][x] !== 0) {
 				cell.classList.add("ship");
+
+				const ship = player1.board.gameboard[y][x];
+				const [originY, originX] = findShipOrigin(ship);
+
+				cell.draggable = true;
+
+				cell.addEventListener("dragstart", (e) => {
+					e.dataTransfer.setData("moving", "true");
+					e.dataTransfer.setData("originY", originY);
+					e.dataTransfer.setData("originX", originX);
+				});
 			}
 			cell.classList.add("player1-cell", "cell");
 			playerOneBoard.appendChild(cell);
@@ -156,6 +168,31 @@ function drawPlayer1Board() {
 			});
 
 			cell.addEventListener("drop", (e) => {
+				const moving = e.dataTransfer.getData("moving");
+
+				// Ship has already been placed
+				if (moving === "true") {
+					console.log("exisiting ship");
+
+					const originY = parseInt(e.dataTransfer.getData("originY"));
+					const originX = parseInt(e.dataTransfer.getData("originX"));
+					const ship = player1.board.gameboard[originY][originX];
+
+					removeShipFromBoard(ship);
+
+					const placed = player1.board.place(ship, [y, x]);
+
+					if (!placed) {
+						player1.board.place(ship, [originY, originX]);
+					}
+
+					recentPlacedShip = ship;
+					recentX = x;
+					recentY = y;
+					drawPlayer1Board();
+					return;
+				}
+
 				const shipSize = parseInt(e.dataTransfer.getData("size"));
 				const shipName = e.dataTransfer.getData("name");
 				const shipHorizontal = e.dataTransfer.getData("horizontal");
@@ -166,10 +203,10 @@ function drawPlayer1Board() {
 					[y, x],
 					shipHorizontal,
 				);
+
 				console.log("placed: ", placed);
 				if (placed) {
 					removeOneFromShipyard(shipName);
-					recentPlacedShipName = shipName;
 				}
 
 				togglePlayer2Board();
@@ -255,4 +292,14 @@ function updateCellColor(boardElement, y, x, playerBoard) {
 function computerMove() {
 	const [ry, rx] = game.computerMove();
 	updateCellColor(playerOneBoard, ry, rx, player1.board);
+}
+
+function findShipOrigin(ship) {
+	for (let y = 0; y < 10; y++) {
+		for (let x = 0; x < 10; x++) {
+			if (player1.board.gameboard[y][x] === ship) {
+				return [y, x];
+			}
+		}
+	}
 }
