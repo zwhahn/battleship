@@ -275,9 +275,9 @@ function drawPlayer2Board() {
 	for (let y = 0; y < 10; y++) {
 		for (let x = 0; x < 10; x++) {
 			const cell = document.createElement("div");
-			if (player2.board.gameboard[y][x] !== 0) {
-				cell.classList.add("ship");
-			}
+			// if (player2.board.gameboard[y][x] !== 0) {
+			// 	cell.classList.add("ship");
+			// }
 			cell.classList.add("cell");
 			playerTwoBoard.appendChild(cell);
 
