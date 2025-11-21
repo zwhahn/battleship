@@ -1,6 +1,8 @@
 import { Gameboard, Player, Ship } from "./battleship.js";
 import { Gameplay } from "./battleship.js";
 
+let rows = 10;
+let columns = 10;
 let player1 = new Player();
 let player2 = new Player();
 let game = new Gameplay(player1, player2);
@@ -156,8 +158,8 @@ function isShipyardEmpty() {
 function drawPlayer1Board() {
 	playerOneBoard.innerHTML = "";
 
-	for (let y = 0; y < 10; y++) {
-		for (let x = 0; x < 10; x++) {
+	for (let y = 0; y < rows; y++) {
+		for (let x = 0; x < columns; x++) {
 			const cell = document.createElement("div");
 			if (player1.board.gameboard[y][x] !== 0) {
 				cell.classList.add("ship");
@@ -258,8 +260,8 @@ function placeShipOnBoard(size, [y, x], horizontal) {
 
 function removeShipFromBoard(ship) {
 	console.log("trying to remove ship: ", ship);
-	for (let y = 0; y < 10; y++) {
-		for (let x = 0; x < 10; x++) {
+	for (let y = 0; y < rows; y++) {
+		for (let x = 0; x < columns; x++) {
 			console.log(player1.board.gameboard[y][x]);
 			if (player1.board.gameboard[y][x] === ship) {
 				console.log("found ship");
@@ -273,8 +275,8 @@ function removeShipFromBoard(ship) {
 function drawPlayer2Board() {
 	playerTwoBoard.innerHTML = "";
 
-	for (let y = 0; y < 10; y++) {
-		for (let x = 0; x < 10; x++) {
+	for (let y = 0; y < rows; y++) {
+		for (let x = 0; x < columns; x++) {
 			const cell = document.createElement("div");
 
 			// View CPU ships
@@ -345,8 +347,8 @@ function computerMove() {
 }
 
 function findShipOrigin(ship) {
-	for (let y = 0; y < 10; y++) {
-		for (let x = 0; x < 10; x++) {
+	for (let y = 0; y < rows; y++) {
+		for (let x = 0; x < columns; x++) {
 			if (player1.board.gameboard[y][x] === ship) {
 				return [y, x];
 			}
