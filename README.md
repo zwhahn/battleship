@@ -4,7 +4,7 @@ Interactive battleship game with 0 dependencies built with pure JavaScript. It w
 
 This project was completed following test-driven development (TDD) philosophy and using the Jest test-running symptom. It features drag-and-drop ship placement, random placement, and intellegent computer guesses.
 
-[Live Preview](https://zwhahn.github.io/battleship/)
+**[Live Preview](https://zwhahn.github.io/battleship/)**
 
 ## Preview
 
